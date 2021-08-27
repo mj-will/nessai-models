@@ -1,7 +1,10 @@
 from .gaussian import Gaussian
+from .gaussianmixture import GaussianMixture, GaussianMixtureWithData
 from .rosenbrock import Rosenbrock
 
 __all__ = [
     'Gaussian',
-    'Rosenbrock'
+    'GaussianMixture',
+    'GaussianMixtureWithData',
+    'Rosenbrock',
 ]

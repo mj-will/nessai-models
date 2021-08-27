@@ -4,12 +4,16 @@ import pytest
 
 from nessaimodels import (
     Gaussian,
-    Rosenbrock
+    GaussianMixture,
+    GaussianMixtureWithData,
+    Rosenbrock,
 )
 
 models = [
     Gaussian,
-    Rosenbrock
+    GaussianMixture,
+    GaussianMixtureWithData,
+    Rosenbrock,
 ]
 
 
