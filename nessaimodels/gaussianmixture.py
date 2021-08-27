@@ -2,37 +2,47 @@
 """
 Gaussian mixture models.
 """
+from typing import Dict, List, Optional, Sequence, Union
+
+from nessai.livepoint import live_points_to_array
+from nessai.model import Model
 import numpy as np
 from scipy.stats import multivariate_normal, norm
 from scipy.special import logsumexp
 
-from nessai.livepoint import live_points_to_array
-
-from nessai.model import Model
+from .base import NDimensionalModel, UniformPriorMixin
 
 
-class GaussianMixture(Model):
+class GaussianMixture(UniformPriorMixin, NDimensionalModel):
     """A Gaussian mixture model with n Gaussians defined on [-10, 10]^n.
 
     Parameters
     ----------
-    dims : int, optional
+    dims : int
         Number of dimensions
-    n : int, optional
+    n_gaussian : int
         Number of Gaussians.
-    config : list of dict, optional
+    config : Optional[Union[List[Dict[str, numpy.ndarray]]]]
         List of configurations for each Gaussian. Each dictionary should have
         a mean and cov key.
-    random_state : :obj:`nessai.random.RandomState`, optional
+    random_state : Optional[numpy.random.RandomState]
         Random state to use for generation configuration if `config` is not
         specified. If not specified `seed` is used instead.
-    seed : int, optional
+    seed : int
         Random seed for seeding random number generation.
+    bounds : Sequence[float], numpy.ndarray]
+        Prior bounds.
     """
-    def __init__(self, dims=4, n_gaussians=2, config=None, random_state=None,
-                 seed=1234, bounds=[-10, 10]):
-        self.names = [f'x_{i}' for i in range(dims)]
-        self.bounds = {n: bounds for n in self.names}
+    def __init__(
+        self,
+        dims: int = 4,
+        n_gaussians: int = 2,
+        config: Optional[List[Dict[str, np.ndarray]]] = None,
+        random_state: Optional[np.random.RandomState] = None,
+        seed: int = 1234,
+        bounds: Union[Sequence[float], np.ndarray] = [-10.0, 10.0]
+    ) -> None:
+        super().__init__(dims, bounds)
 
         if random_state is None:
             random_state = np.random.RandomState(seed=seed)
@@ -52,28 +62,14 @@ class GaussianMixture(Model):
                 )
             self.gaussians[n] = multivariate_normal(**config[n])
 
-    def log_prior(self, x):
-        """
-        Returns log of prior given a live point assuming uniforn
-        priors on each parameter.
-        """
-        log_p = np.zeros(x.size)
-        for n in self.names:
-            log_p += np.log((x[n] >= self.bounds[n][0])
-                            & (x[n] <= self.bounds[n][1]))
-            log_p -= np.log(self.bounds[n][1] - self.bounds[n][0])
-        return log_p
-
-    def log_likelihood(self, x):
-        """
-        Returns log likelihood of given live point.
-        """
+    def log_likelihood(self, x: np.ndarray) -> np.ndarray:
+        """Log-likelihood for the mixture of Gaussians."""
         _x = live_points_to_array(x, self.names)
         log_l = logsumexp([g.logpdf(_x) for g in self.gaussians], axis=0)
         return log_l
 
 
-class GaussianMixtureWithData(Model):
+class GaussianMixtureWithData(UniformPriorMixin, Model):
     """
     A Gaussian mixture model with two peaks that uses samples and fits the
     the means standard deviations and weight.
@@ -86,10 +82,10 @@ class GaussianMixtureWithData(Model):
 
     Parameters
     ----------
-    n : int, optional
+    n : int
         Number of data points to use.
     """
-    def __init__(self, n=10000):
+    def __init__(self, n: int = 1000) -> None:
         self.names = ['mu1', 'sigma1', 'mu2', 'sigma2', 'weight']
         self.bounds = {
             'mu1': [-3, 3],
@@ -117,26 +113,16 @@ class GaussianMixtureWithData(Model):
             self.gaussian2.rvs(size=n2)
         ])
 
-    def log_prior(self, x):
-        """
-        Returns log of prior given a live point assuming uniforn
-        priors on each parameter.
-        """
-        log_p = np.zeros(x.size)
-        for n in self.names:
-            log_p += np.log((x[n] >= self.bounds[n][0])
-                            & (x[n] <= self.bounds[n][1]))
-            log_p -= np.log(self.bounds[n][1] - self.bounds[n][0])
-        return log_p
-
-    def log_likelihood(self, x):
-        """
-        Returns log likelihood of given live point.
-        """
-        w = x['weight']
-        log_l1 = np.sum(np.log(w) - np.log(x['sigma1']) -
-                        0.5 * ((self.data - x['mu1']) / x['sigma1']) ** 2)
-        log_l2 = np.sum(np.log(1.0 - w) - np.log(x['sigma2']) -
-                        0.5 * ((self.data - x['mu2']) / x['sigma2']) ** 2)
+    def log_likelihood(self, x: np.ndarray) -> np.ndarray:
+        """Returns log likelihood of given live point."""
+        w = x['weight'][..., np.newaxis]
+        mu1 = x['mu1'][..., np.newaxis]
+        mu2 = x['mu2'][..., np.newaxis]
+        sigma1 = x['sigma1'][..., np.newaxis]
+        sigma2 = x['sigma2'][..., np.newaxis]
+        log_l1 = np.sum(np.log(w) - np.log(sigma1) -
+                        0.5 * ((self.data - mu1) / sigma1) ** 2, axis=-1)
+        log_l2 = np.sum(np.log(1.0 - w) - np.log(sigma2) -
+                        0.5 * ((self.data - mu2) / sigma2) ** 2, axis=-1)
         log_l = np.logaddexp(log_l1, log_l2)
         return log_l
