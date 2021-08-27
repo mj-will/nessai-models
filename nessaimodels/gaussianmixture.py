@@ -3,10 +3,11 @@
 Gaussian mixture models.
 """
 import numpy as np
-from scipy.stats import multivariate_normal
+from scipy.stats import multivariate_normal, norm
 from scipy.special import logsumexp
 
 from nessai.livepoint import live_points_to_array
+
 from nessai.model import Model
 
 
@@ -80,6 +81,9 @@ class GaussianMixtureWithData(Model):
     Based on the example from cpnest: \
         https://github.com/johnveitch/cpnest/blob/master/examples/gaussianmixture.py
 
+    The parameters to estimate are the means, standard deviations and the
+    weight.
+
     Parameters
     ----------
     n : int, optional
@@ -89,10 +93,10 @@ class GaussianMixtureWithData(Model):
         self.names = ['mu1', 'sigma1', 'mu2', 'sigma2', 'weight']
         self.bounds = {
             'mu1': [-3, 3],
-            'sigma1': [0.01, 1.0],
+            'sigma1': [0.01, 1],
             'mu2': [-3, 3],
             'sigma2': [0.01, 1.0],
-            'weight': [0.01, 0.99]
+            'weight': [0.0, 1.0]
         }
 
         self.truth = {
@@ -100,14 +104,17 @@ class GaussianMixtureWithData(Model):
             'sigma1': 0.5,
             'mu2': -1.5,
             'sigma2': 0.03,
-            'weight': 0.1
+            'weight': 0.2
         }
+        self.gaussian1 = norm(self.truth['mu1'], scale=self.truth['sigma1'])
+        self.gaussian2 = norm(self.truth['mu2'], scale=self.truth['sigma2'])
+
         n1 = int(self.truth['weight'] * n)
         n2 = n - n1
 
         self.data = np.concatenate([
-            np.random.normal(self.truth['mu1'], self.truth['sigma1'], size=n1),
-            np.random.normal(self.truth['mu2'], self.truth['sigma2'], size=n2)
+            self.gaussian1.rvs(size=n1),
+            self.gaussian2.rvs(size=n2)
         ])
 
     def log_prior(self, x):
@@ -119,8 +126,7 @@ class GaussianMixtureWithData(Model):
         for n in self.names:
             log_p += np.log((x[n] >= self.bounds[n][0])
                             & (x[n] <= self.bounds[n][1]))
-        for n in ['sigma1', 'sigma2']:
-            log_p -= np.log(x[n])
+            log_p -= np.log(self.bounds[n][1] - self.bounds[n][0])
         return log_p
 
     def log_likelihood(self, x):
@@ -128,9 +134,9 @@ class GaussianMixtureWithData(Model):
         Returns log likelihood of given live point.
         """
         w = x['weight']
-        log_l1 = (np.log(w) - np.log(x['sigma1']) -
-                  0.5 * ((self.data - x['mu1']) / x['sigma1']) ** 2)
-        log_l2 = (np.log(1.0 - w) - np.log(x['sigma2']) -
-                  0.5 * ((self.data - x['mu2']) / x['sigma2']) ** 2)
-        log_l = np.logaddexp(log_l1, log_l2).sum()
+        log_l1 = np.sum(np.log(w) - np.log(x['sigma1']) -
+                        0.5 * ((self.data - x['mu1']) / x['sigma1']) ** 2)
+        log_l2 = np.sum(np.log(1.0 - w) - np.log(x['sigma2']) -
+                        0.5 * ((self.data - x['mu2']) / x['sigma2']) ** 2)
+        log_l = np.logaddexp(log_l1, log_l2)
         return log_l
