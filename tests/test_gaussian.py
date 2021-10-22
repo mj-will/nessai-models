@@ -9,6 +9,7 @@ from scipy.stats import multivariate_normal
 from unittest.mock import create_autospec, patch
 
 from nessaimodels import Gaussian
+from nessaimodels.gaussian import compute_gaussian_ln_evidence
 
 
 @pytest.fixture
@@ -38,3 +39,17 @@ def test_log_likelihood(model, points):
     x = live_points_to_array(points, names=model.names)
     target = multivariate_normal(mean=len(model.names) * [0]).logpdf(x)
     np.testing.assert_array_almost_equal(log_l, target)
+
+
+@pytest.mark.parametrize(
+    "dims, bounds, expected",
+    [
+        [2, [-10, 10], - 2 * np.log(20)],
+        [None, [[-10, 10], [-10, 10]], -2 * np.log(20)],
+        [4, [-5, 5], -4 * np.log(10)],
+    ]
+)
+def test_gaussian_ln_evidence(dims, bounds, expected):
+    """Assert the correct log evidence is returned."""
+    out = compute_gaussian_ln_evidence(bounds, dims)
+    assert expected == out
