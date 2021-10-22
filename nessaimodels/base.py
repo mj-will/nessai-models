@@ -8,7 +8,18 @@ from nessai.model import Model
 import numpy as np
 
 
-class NDimensionalModel(Model):
+class BaseModel(Model):
+    """Model that includes an evidence attribute.
+
+    Attributes
+    ----------
+    ln_evidence : float
+        Natural log-evidence. Not set by default.
+    """
+    ln_evidence: float = None
+
+
+class NDimensionalModel(BaseModel):
     """Model with basic init for n-dimensional likelihoods.
 
     Parameters

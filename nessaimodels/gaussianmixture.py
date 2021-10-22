@@ -5,12 +5,11 @@ Gaussian mixture models.
 from typing import Dict, List, Optional, Sequence, Union
 
 from nessai.livepoint import live_points_to_array
-from nessai.model import Model
 import numpy as np
 from scipy.stats import multivariate_normal, norm
 from scipy.special import logsumexp
 
-from .base import NDimensionalModel, UniformPriorMixin
+from .base import BaseModel, NDimensionalModel, UniformPriorMixin
 
 
 class GaussianMixture(UniformPriorMixin, NDimensionalModel):
@@ -69,7 +68,7 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
         return log_l
 
 
-class GaussianMixtureWithData(UniformPriorMixin, Model):
+class GaussianMixtureWithData(UniformPriorMixin, BaseModel):
     """
     A Gaussian mixture model with two peaks that uses samples and fits the
     the means standard deviations and weight.
