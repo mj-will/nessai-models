@@ -6,6 +6,7 @@ from nessaimodels import (
     Gaussian,
     GaussianMixture,
     GaussianMixtureWithData,
+    HalfGaussian,
     Rosenbrock,
 )
 
@@ -13,6 +14,7 @@ models = [
     Gaussian,
     GaussianMixture,
     GaussianMixtureWithData,
+    HalfGaussian,
     Rosenbrock,
 ]
 
