@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from unittest.mock import MagicMock, create_autospec
 
-from nessaimodels.base import (
+from nessai_models.base import (
     NDimensionalModel,
     UniformPriorMixin,
 )

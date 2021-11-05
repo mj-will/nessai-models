@@ -8,8 +8,8 @@ import pytest
 from scipy.stats import multivariate_normal
 from unittest.mock import create_autospec, patch
 
-from nessaimodels import Gaussian
-from nessaimodels.gaussian import compute_gaussian_ln_evidence
+from nessai_models import Gaussian
+from nessai_models.gaussian import compute_gaussian_ln_evidence
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def points(request):
 
 def test_init(model):
     """Test the init method"""
-    with patch('nessaimodels.base.NDimensionalModel.__init__') as m:
+    with patch('nessai_models.base.NDimensionalModel.__init__') as m:
         Gaussian.__init__(model, 2, [-5, 5])
     m.assert_called_once_with(2, [-5, 5])
 
