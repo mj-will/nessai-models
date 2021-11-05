@@ -2,7 +2,7 @@
 """Basic tests for all models."""
 import pytest
 
-from nessaimodels import (
+from nessai_models import (
     Gaussian,
     GaussianMixture,
     GaussianMixtureWithData,

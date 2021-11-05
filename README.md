@@ -11,13 +11,13 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 
 ## Requirements
 
-`nessaimodels` requires:
+`nessai_models` requires:
 * `numpy`
 * `scipy`
 * `nessai>=0.3.1`
 ## Installation
 
-`nessaimodels` is not currently available on PyPI but it can be installed using `pip` directly from the repository:
+`nessai_models` is not currently available on PyPI but it can be installed using `pip` directly from the repository:
 
 ```
 pip install git+https://github.com/igr-ml/nessai-models.git
@@ -25,11 +25,11 @@ pip install git+https://github.com/igr-ml/nessai-models.git
 
 ## Example usage
 
-Below is an example of using `nessaimodels` so configure a 4-dimensional Gaussian and then sample it using `nessai`.
+Below is an example of using `nessai_models` so configure a 4-dimensional Gaussian and then sample it using `nessai`.
 
 ```python
 from nessai import FlowSampler
-from nessaimodels import Gaussian
+from nessai_models import Gaussian
 
 model = Gaussian(4)
 fs = FlowSampler(model, output='example/')

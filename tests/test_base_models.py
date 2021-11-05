@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Tests the base models from `nessaimodels.base."""
+"""Tests the base models from `nessai_models.base`."""
 import numpy as np
 import pytest
 from unittest.mock import MagicMock, create_autospec
 
-from nessaimodels.base import (
+from nessai_models.base import (
     NDimensionalModel,
     UniformPriorMixin,
 )
@@ -12,7 +12,7 @@ from nessaimodels.base import (
 
 @pytest.mark.parametrize('bounds', [[-10.0, 10.0], np.array([-10.0, 10.0])])
 def test_n_dimensional_model_bounds(bounds):
-    """Test the n-dimenesional model init."""
+    """Test the n-dimensional model init."""
     model = create_autospec(NDimensionalModel)
     NDimensionalModel.__init__(model, 2, [-10, 10])
     assert model.names == ['x_0', 'x_1']
