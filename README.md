@@ -15,7 +15,10 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 * `numpy`
 * `scipy`
 * `nessai>=0.3.1`
+
 ## Installation
+
+> We recommend following the [installation instructions for `nessai`](https://github.com/mj-will/nessai#installation) and then installing `nessai_models` since it shares all of its dependencies with `nessai`.
 
 `nessai_models` is not currently available on PyPI but it can be installed using `pip` directly from the repository:
 
