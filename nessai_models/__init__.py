@@ -13,12 +13,14 @@ try:
 except PackageNotFoundError:
     pass
 
+from .eggbox import EggBox
 from .gaussian import Gaussian
 from .gaussianmixture import GaussianMixture, GaussianMixtureWithData
 from .halfgaussian import HalfGaussian
 from .rosenbrock import Rosenbrock
 
 __all__ = [
+    'EggBox',
     'Gaussian',
     'GaussianMixture',
     'GaussianMixtureWithData',
