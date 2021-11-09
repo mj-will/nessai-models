@@ -3,6 +3,7 @@
 import pytest
 
 from nessai_models import (
+    EggBox,
     Gaussian,
     GaussianMixture,
     GaussianMixtureWithData,
@@ -11,6 +12,7 @@ from nessai_models import (
 )
 
 models = [
+    EggBox,
     Gaussian,
     GaussianMixture,
     GaussianMixtureWithData,
