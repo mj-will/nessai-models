@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add Gaussian Mixture Model based on a [`cpnest` example](https://github.com/johnveitch/cpnest/blob/master/examples/gaussianmixture.py)
 * Add basic tests for all models
 * Add n-dimensional Egg Box based on the version from [Feroz et al. 2008](https://arxiv.org/abs/0809.3437)
+* Add n-dimensional Pyramid-like model
 
 
 [Unreleased]: https://github.com/mj-will/nessai-models/compare/v0.1.0...HEAD

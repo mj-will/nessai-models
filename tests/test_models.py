@@ -8,6 +8,7 @@ from nessai_models import (
     GaussianMixture,
     GaussianMixtureWithData,
     HalfGaussian,
+    Pyramid,
     Rosenbrock,
 )
 
@@ -17,6 +18,7 @@ models = [
     GaussianMixture,
     GaussianMixtureWithData,
     HalfGaussian,
+    Pyramid,
     Rosenbrock,
 ]
 
