@@ -3,9 +3,10 @@
 N-dimensional Gaussian likelihood
 """
 from typing import Optional, Sequence, Union
+import warnings
 
 import numpy as np
-from scipy.stats import norm
+from scipy.stats import multivariate_normal
 
 from .base import NDimensionalModel, UniformPriorMixin
 
@@ -43,9 +44,10 @@ def compute_gaussian_ln_evidence(
 
 
 class Gaussian(UniformPriorMixin, NDimensionalModel):
-    """A simple n-dimensional unit Guassian.
+    """A simple n-dimensional Guassian with uniform priors.
 
-    Defaults to two dimensions and priors defined on [-10, 10]^n.
+    Defaults to a unit Gaussian two dimensions and priors defined on
+    [-10, 10]^n.
 
     Parameters
     ----------
@@ -53,18 +55,54 @@ class Gaussian(UniformPriorMixin, NDimensionalModel):
         Number of dimensions.
     bounds : Union[Sequence[float], numpy.ndarray]
         Prior bounds.
+    mean : Optional[Sequence[float], numpy.ndarray]
+        Mean of the Gaussian.
+    cov: Optional[Sequence[float], numpy.ndarray]
+        Covariance matrix of the Gaussian.
+    normalise : bool
+        If true, the log-likelihood will be renormalised such that the log-
+        evidence is zero. Only applies when :code:`mean` and :code:`cov` are
+        not specified.
     """
     def __init__(
         self,
         dims: int = 2,
-        bounds: Union[Sequence[int], np.ndarray] = [-10.0, 10.0]
+        bounds: Union[Sequence[float], np.ndarray] = [-10.0, 10.0],
+        mean: Union[Sequence[float], np.ndarray] = None,
+        cov: Union[Sequence[float], np.ndarray] = None,
+        normalise : bool = False,
     ) -> None:
         super().__init__(dims, bounds)
-        self.ln_evidence = compute_gaussian_ln_evidence(bounds, dims=self.dims)
 
+        self._norm_const = 0.0
+        if mean is None:
+            self.mean = np.zeros(self.dims)
+        elif isinstance(mean, (float, int)):
+            self.mean = float(mean) * np.ones(self.dims)
+        else:
+            self.mean = mean
+
+        if cov is None:
+            self.cov = np.eye(self.dims)
+        else:
+            self.cov = cov
+
+        self.dist = multivariate_normal(mean=self.mean, cov=self.cov)
+        self.normalise = normalise
+
+        if cov is None and mean is None:
+            self.ln_evidence = \
+                compute_gaussian_ln_evidence(bounds, dims=self.dims)
+            if self.normalise:
+                self._norm_const = self.ln_evidence
+        else:
+            self.ln_evidence = None
+            if self.normalise:
+                warnings.warn("Cannot normalise non-unit Gaussian")
+                self.normalise = False
+
+ 
     def log_likelihood(self, x: np.ndarray) -> np.ndarray:
         """Gaussian log-likelihood."""
-        log_l = np.zeros(x.size)
-        for n in self.names:
-            log_l += norm.logpdf(x[n])
-        return log_l
+        # Use a view rather than making a new copy of y
+        return self.dist.logpdf(self.unstructured_view(x)) - self._norm_const
