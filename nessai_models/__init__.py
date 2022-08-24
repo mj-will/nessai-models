@@ -17,6 +17,7 @@ from .eggbox import EggBox
 from .gaussian import Gaussian
 from .gaussianmixture import GaussianMixture, GaussianMixtureWithData
 from .halfgaussian import HalfGaussian
+from .pyramid import Pyramid
 from .rosenbrock import Rosenbrock
 
 __all__ = [
@@ -25,5 +26,6 @@ __all__ = [
     'GaussianMixture',
     'GaussianMixtureWithData',
     'HalfGaussian',
+    'Pyramid',
     'Rosenbrock',
 ]
