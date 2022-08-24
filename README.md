@@ -15,7 +15,7 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 `nessai_models` requires:
 * `numpy`
 * `scipy`
-* `nessai>=0.3.1`
+* `nessai>=0.6.0`
 
 ## Installation
 
