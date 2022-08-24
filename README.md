@@ -9,6 +9,7 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 * n-dimensional mixture of Gaussians
 * Gaussian mixture using data to based on [this example](https://github.com/johnveitch/cpnest/blob/master/examples/gaussianmixture.py) from `cpnest`
 * n-dimensional Egg Box based on the version in [Feroz et al. 2008](https://arxiv.org/abs/0809.3437)
+* n-dimensional Pyramid-like model
 
 ## Requirements
 
