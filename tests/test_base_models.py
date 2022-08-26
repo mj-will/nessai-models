@@ -70,3 +70,29 @@ def test_uniform_prior_mixin_out_of_bounds():
 
     obj.in_bounds.assert_called_once_with(x)
     np.testing.assert_equal(log_prob, target)
+
+
+def test_uniform_prior_mixin_to_unit_hypercube():
+    """Assert samples are transformed to the correct range"""
+    obj = create_autospec(UniformPriorMixin)
+    obj.bounds = {'x': np.array([-10, 10])}
+    obj.names = ['x']
+
+    x = np.array([(-10,), (0,), (10,)], dtype=[('x', 'f8')])
+
+    out = UniformPriorMixin.to_unit_hypercube(obj, x)
+
+    np.testing.assert_array_equal(out['x'], np.array([0.0, 0.5, 1.0]))
+
+
+def test_uniform_prior_mixin_from_unit_hypercube():
+    """Assert samples are transformed to the correct range"""
+    obj = create_autospec(UniformPriorMixin)
+    obj.bounds = {'x': np.array([-10, 10])}
+    obj.names = ['x']
+
+    x = np.array([(0.0,), (0.5,), (1,)], dtype=[('x', 'f8')])
+
+    out = UniformPriorMixin.from_unit_hypercube(obj, x)
+
+    np.testing.assert_array_equal(out['x'], np.array([-10.0, 0.0, 10.0]))
