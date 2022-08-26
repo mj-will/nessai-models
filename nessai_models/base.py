@@ -67,3 +67,45 @@ class UniformPriorMixin:
             log_p = np.log(self.in_bounds(x), dtype=float)
         log_p -= np.sum(np.log(self.upper_bounds - self.lower_bounds))
         return log_p
+
+    def to_unit_hypercube(self, x: np.ndarray) -> np.ndarray:
+        """Convert the samples to the unit-hypercube.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            Array of samples.
+
+        Returns
+        -------
+        numpy.ndarray
+            Array of rescaled samples.
+        """
+        x_out = x.copy()
+        for n in self.names:
+            x_out[n] = (
+                (x[n] - self.bounds[n][0])
+                / (self.bounds[n][1] - self.bounds[n][0])
+            )
+        return x_out
+
+    def from_unit_hypercube(self, x: np.ndarray) -> np.ndarray:
+        """Convert samples from the unit-hypercube to the prior space.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            Array of samples in the unit-hypercube.
+
+        Returns
+        -------
+        numpy.ndarray
+            Array of sample in the prior space.
+        """
+        x_out = x.copy()
+        for n in self.names:
+            x_out[n] = (
+                (self.bounds[n][1] - self.bounds[n][0])
+                * x[n] + self.bounds[n][0]
+            )
+        return x_out
