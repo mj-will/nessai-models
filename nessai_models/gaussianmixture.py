@@ -4,7 +4,6 @@ Gaussian mixture models.
 """
 from typing import Dict, List, Optional, Sequence, Union
 
-from nessai.livepoint import live_points_to_array
 import numpy as np
 from scipy.stats import multivariate_normal, norm
 from scipy.special import logsumexp
@@ -21,6 +20,8 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
         Number of dimensions
     n_gaussian : int
         Number of Gaussians.
+    weights : Optional[Union[Sequence[float], np.ndarray]]
+        Weights for each of the Gaussian. Must sum to one.
     config : Optional[Union[List[Dict[str, numpy.ndarray]]]]
         List of configurations for each Gaussian. Each dictionary should have
         a mean and cov key.
@@ -36,6 +37,7 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
         self,
         dims: int = 4,
         n_gaussians: int = 2,
+        weights: Optional[Union[Sequence[float], np.ndarray]] = None,
         config: Optional[List[Dict[str, np.ndarray]]] = None,
         random_state: Optional[np.random.RandomState] = None,
         seed: int = 1234,
@@ -47,6 +49,14 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
             random_state = np.random.RandomState(seed=seed)
 
         self.n_gaussians = n_gaussians
+        if weights is None:
+            self.weights = np.ones(n_gaussians) / n_gaussians
+        else:
+            if len(weights) != n_gaussians:
+                ValueError(
+                    'Length of weights must match number of Gaussians'
+                )
+            self.weights = np.array(weights)
         self.gaussians = n_gaussians * [None]
         if config is None:
             config = n_gaussians * [None]
@@ -63,8 +73,12 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
 
     def log_likelihood(self, x: np.ndarray) -> np.ndarray:
         """Log-likelihood for the mixture of Gaussians."""
-        _x = live_points_to_array(x, self.names)
-        log_l = logsumexp([g.logpdf(_x) for g in self.gaussians], axis=0)
+        _x = self.unstructured_view(x)
+        b = np.broadcast_to(self.weights, (x.size, self.n_gaussians)).T
+        arg = np.array([g.logpdf(_x) for g in self.gaussians])
+        if arg.ndim == 1:
+            arg = arg[:, np.newaxis]
+        log_l = logsumexp(arg, b=b, axis=0)
         return log_l
 
 
