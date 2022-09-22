@@ -1,3 +1,8 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7105559.svg)](https://doi.org/10.5281/zenodo.7105559)
+[![PyPI](https://img.shields.io/pypi/v/nessai-models)](https://pypi.org/project/nessai-models/)
+[![Integration tests](https://github.com/mj-will/nessai-models/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/mj-will/nessai-models/actions/workflows/integration-tests.yml)
+[![Unit tests](https://github.com/mj-will/nessai-models/actions/workflows/tests.yml/badge.svg)](https://github.com/mj-will/nessai-models/actions/workflows/tests.yml)
+
 # nessai-models
 
 Models for use with the nested sampling package [`nessai`](https://github.com/mj-will/nessai).
@@ -41,3 +46,7 @@ model = Gaussian(4)
 fs = FlowSampler(model, output='example/')
 fs.run()
 ```
+
+## Citing
+
+If you use `nessai_models` in your work please cite the [Zenodo DOI](https://doi.org/10.5281/zenodo.7105559)
