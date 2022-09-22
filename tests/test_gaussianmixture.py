@@ -10,7 +10,7 @@ import pytest
 from nessai_models.gaussianmixture import GaussianMixture
 
 
-@pytest.mark.integration
+@pytest.mark.integration_test
 def test_weighted_gm():
     """Integration test to verify the log-likelihood."""
     dims = 2

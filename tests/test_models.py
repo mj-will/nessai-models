@@ -2,39 +2,14 @@
 """Basic tests for all models."""
 import pytest
 
-from nessai_models import (
-    EggBox,
-    Gaussian,
-    GaussianMixture,
-    GaussianMixtureWithData,
-    HalfGaussian,
-    Pyramid,
-    Rosenbrock,
-)
-
-models = [
-    EggBox,
-    Gaussian,
-    GaussianMixture,
-    GaussianMixtureWithData,
-    HalfGaussian,
-    Pyramid,
-    Rosenbrock,
-]
-
-
-@pytest.fixture(params=models)
-def Model(request):
-    return request.param
-
 
 @pytest.mark.parametrize("n", [1, 10])
-def test_model_likelihood_and_prior(Model, n):
+def test_model_likelihood_and_prior(ModelClass, n):
     """Check the log-prior and log-likelihood integration.
 
     Asserts values are returned and the correct size.
     """
-    model = Model()
+    model = ModelClass()
     x = model.new_point(n)
     log_p = model.log_prior(x)
     log_l = model.log_likelihood(x)
