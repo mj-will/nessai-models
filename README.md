@@ -5,6 +5,7 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 ## Included models
 
 * n-dimensional unit Gaussian
+* n-dimensional HalfGaussian
 * n-dimensional Rosenbrock
 * n-dimensional mixture of Gaussians
 * Gaussian mixture using data to based on [this example](https://github.com/johnveitch/cpnest/blob/master/examples/gaussianmixture.py) from `cpnest`
