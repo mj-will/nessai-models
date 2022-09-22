@@ -1,23 +1,26 @@
 # -*- coding: utf-8 -*-
 """Test integration with nessai."""
 import os
-
 from nessai.flowsampler import FlowSampler
-from nessai_models import Gaussian
 import pytest
 
 
 @pytest.mark.slow_integration_test
-def test_sampling(tmp_path):
-    """Run a basic sampling run"""
+def test_sampling(tmp_path, ModelClass):
+    """Run a basic sampling run.
+
+    Only runs 500 iterations since this should be enough to test the core
+    functionality.
+    """
     output = tmp_path / "test_sampling"
     output.mkdir()
     fs = FlowSampler(
-        Gaussian(2),
+        ModelClass(),
         nlive=100,
+        poolsize=100,
         output=output,
         resume=False,
-        checkpointing=False,
+        max_iteration=500,
         tolerance=1.0,
         plot=False,
     )
