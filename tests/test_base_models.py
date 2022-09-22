@@ -10,14 +10,14 @@ from nessai_models.base import (
 )
 
 
-@pytest.mark.parametrize('bounds', [[-10.0, 10.0], np.array([-10.0, 10.0])])
+@pytest.mark.parametrize("bounds", [[-10.0, 10.0], np.array([-10.0, 10.0])])
 def test_n_dimensional_model_bounds(bounds):
     """Test the n-dimensional model init."""
     model = create_autospec(NDimensionalModel)
     NDimensionalModel.__init__(model, 2, [-10, 10])
-    assert model.names == ['x_0', 'x_1']
-    np.testing.assert_equal(model.bounds['x_0'], [-10.0, 10.0])
-    np.testing.assert_equal(model.bounds['x_1'], [-10.0, 10.0])
+    assert model.names == ["x_0", "x_1"]
+    np.testing.assert_equal(model.bounds["x_0"], [-10.0, 10.0])
+    np.testing.assert_equal(model.bounds["x_1"], [-10.0, 10.0])
 
 
 def test_n_dimensional_model_bounds_invalid_type():
@@ -25,7 +25,7 @@ def test_n_dimensional_model_bounds_invalid_type():
     model = create_autospec(NDimensionalModel)
     with pytest.raises(TypeError) as excinfo:
         NDimensionalModel.__init__(model, 2, 10)
-    assert 'Invalid type' in str(excinfo.value)
+    assert "Invalid type" in str(excinfo.value)
 
 
 def test_n_dimensional_model_bounds_invalid_length():
@@ -33,7 +33,7 @@ def test_n_dimensional_model_bounds_invalid_length():
     model = create_autospec(NDimensionalModel)
     with pytest.raises(ValueError) as excinfo:
         NDimensionalModel.__init__(model, 2, [1, 2, 3])
-    assert 'must have length 2' in str(excinfo.value)
+    assert "must have length 2" in str(excinfo.value)
 
 
 def test_uniform_prior_mixin():
@@ -75,24 +75,24 @@ def test_uniform_prior_mixin_out_of_bounds():
 def test_uniform_prior_mixin_to_unit_hypercube():
     """Assert samples are transformed to the correct range"""
     obj = create_autospec(UniformPriorMixin)
-    obj.bounds = {'x': np.array([-10, 10])}
-    obj.names = ['x']
+    obj.bounds = {"x": np.array([-10, 10])}
+    obj.names = ["x"]
 
-    x = np.array([(-10,), (0,), (10,)], dtype=[('x', 'f8')])
+    x = np.array([(-10,), (0,), (10,)], dtype=[("x", "f8")])
 
     out = UniformPriorMixin.to_unit_hypercube(obj, x)
 
-    np.testing.assert_array_equal(out['x'], np.array([0.0, 0.5, 1.0]))
+    np.testing.assert_array_equal(out["x"], np.array([0.0, 0.5, 1.0]))
 
 
 def test_uniform_prior_mixin_from_unit_hypercube():
     """Assert samples are transformed to the correct range"""
     obj = create_autospec(UniformPriorMixin)
-    obj.bounds = {'x': np.array([-10, 10])}
-    obj.names = ['x']
+    obj.bounds = {"x": np.array([-10, 10])}
+    obj.names = ["x"]
 
-    x = np.array([(0.0,), (0.5,), (1,)], dtype=[('x', 'f8')])
+    x = np.array([(0.0,), (0.5,), (1,)], dtype=[("x", "f8")])
 
     out = UniformPriorMixin.from_unit_hypercube(obj, x)
 
-    np.testing.assert_array_equal(out['x'], np.array([-10.0, 0.0, 10.0]))
+    np.testing.assert_array_equal(out["x"], np.array([-10.0, 0.0, 10.0]))

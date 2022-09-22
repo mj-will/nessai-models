@@ -27,10 +27,11 @@ class EggBox(UniformPriorMixin, NDimensionalModel):
     bounds :
         Prior bounds.
     """
+
     def __init__(
         self,
         dims: int = 2,
-        bounds: Union[Sequence[int], np.ndarray] = [0, 10.0 * np.pi]
+        bounds: Union[Sequence[int], np.ndarray] = [0, 10.0 * np.pi],
     ) -> None:
         super().__init__(dims, bounds)
 

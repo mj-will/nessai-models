@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 N-dimensional Rosenbrock likelihood
@@ -11,7 +10,7 @@ from .base import NDimensionalModel, UniformPriorMixin
 
 
 def uncoupled_rosenbrock(x: np.ndarray) -> np.ndarray:
-    """Uncoupled Rosenbrock function in N dimensions.
+    r"""Uncoupled Rosenbrock function in N dimensions.
 
     This is the simpler version which is the sum of N/2 uncouple 2D
     Rosenbrocks given by
@@ -21,13 +20,13 @@ def uncoupled_rosenbrock(x: np.ndarray) -> np.ndarray:
     """
     return np.sum(
         100.0 * (x[..., ::2] ** 2.0 - x[..., 1::2]) ** 2.0
-        + (x[..., ::2] - 1.0) ** 2.0, 
-        axis=-1
+        + (x[..., ::2] - 1.0) ** 2.0,
+        axis=-1,
     )
 
 
 def rosenbrock(x: np.ndarray) -> np.ndarray:
-    """Rosenbrock function in N dimensions.
+    r"""Rosenbrock function in N dimensions.
 
     This is the more involved variant given by
 
@@ -35,9 +34,9 @@ def rosenbrock(x: np.ndarray) -> np.ndarray:
         \sum_{i=1}^{N-1} [100(x_{i+1} - x_{i}^{2})^2 + (1 - x_{i})^2].
     """
     return np.sum(
-        100. * (x[..., 1:] - x[..., :-1] ** 2.0) ** 2.0
+        100.0 * (x[..., 1:] - x[..., :-1] ** 2.0) ** 2.0
         + (1.0 - x[..., :-1]) ** 2.0,
-        axis=-1
+        axis=-1,
     )
 
 
@@ -55,11 +54,12 @@ class Rosenbrock(UniformPriorMixin, NDimensionalModel):
     uncouple : bool
         Enable the uncoupled (simpler) version of the Rosenbrock likelihood.
     """
+
     def __init__(
         self,
         dims: int = 2,
         bounds: Union[Sequence[int], np.ndarray] = [-5.0, 5.0],
-        uncoupled : float = False,
+        uncoupled: float = False,
     ) -> None:
         super().__init__(dims, bounds)
 

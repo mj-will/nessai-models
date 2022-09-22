@@ -13,5 +13,5 @@ from nessai_models.pyramid import Pyramid
 def test_max_log_likelihood(dims):
     """Assert the maximum log-likelihood is zero at [0, 0]"""
     model = Pyramid(dims=dims)
-    x = parameters_to_live_point(dims * [0.0], [f'x{i}' for i in range(dims)])
+    x = parameters_to_live_point(dims * [0.0], [f"x{i}" for i in range(dims)])
     assert model.log_likelihood(x) == 0.0

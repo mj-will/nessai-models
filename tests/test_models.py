@@ -28,7 +28,7 @@ def Model(request):
     return request.param
 
 
-@pytest.mark.parametrize('n', [1, 10])
+@pytest.mark.parametrize("n", [1, 10])
 def test_model_likelihood_and_prior(Model, n):
     """Check the log-prior and log-likelihood integration.
 
