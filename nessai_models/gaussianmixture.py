@@ -18,7 +18,7 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
     ----------
     dims : int
         Number of dimensions
-    n_gaussian : int
+    n_gaussians : int
         Number of Gaussians.
     weights : Optional[Union[Sequence[float], np.ndarray]]
         Weights for each of the Gaussian. Must sum to one.
@@ -30,7 +30,7 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
         specified. If not specified `seed` is used instead.
     seed : int
         Random seed for seeding random number generation.
-    bounds : Sequence[float], numpy.ndarray]
+    bounds : Union[Sequence[float], numpy.ndarray]
         Prior bounds.
     """
     def __init__(
