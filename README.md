@@ -5,6 +5,7 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 ## Included models
 
 * n-dimensional unit Gaussian
+* n-dimensional HalfGaussian
 * n-dimensional Rosenbrock
 * n-dimensional mixture of Gaussians
 * Gaussian mixture using data to based on [this example](https://github.com/johnveitch/cpnest/blob/master/examples/gaussianmixture.py) from `cpnest`
@@ -22,10 +23,10 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 
 > We recommend following the [installation instructions for `nessai`](https://github.com/mj-will/nessai#installation) and then installing `nessai_models` since it shares all of its dependencies with `nessai`.
 
-`nessai_models` is not currently available on PyPI but it can be installed using `pip` directly from the repository:
+`nessai_models` can be install from PyPI using
 
-```
-pip install git+https://github.com/igr-ml/nessai-models.git
+```console
+pip install nessai-models
 ```
 
 ## Example usage
