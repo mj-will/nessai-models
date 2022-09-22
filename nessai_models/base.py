@@ -16,6 +16,7 @@ class BaseModel(Model):
     ln_evidence : float
         Natural log-evidence. Not set by default.
     """
+
     ln_evidence: float = None
 
 
@@ -29,20 +30,19 @@ class NDimensionalModel(BaseModel):
     bounds : Union[Sequence[float], numpy.ndarray]
         Prior bounds.
     """
+
     def __init__(
-        self,
-        dims: int,
-        bounds: Union[Sequence[float], np.ndarray]
+        self, dims: int, bounds: Union[Sequence[float], np.ndarray]
     ) -> None:
-        self.names = [f'x_{i}' for i in range(dims)]
+        self.names = [f"x_{i}" for i in range(dims)]
         if isinstance(bounds, (Sequence, np.ndarray)):
             if len(bounds) == 2:
                 bounds = np.asarray(bounds, dtype=float)
                 self.bounds = {n: bounds for n in self.names}
             else:
-                raise ValueError('bounds must have length 2.')
+                raise ValueError("bounds must have length 2.")
         else:
-            raise TypeError('Invalid type for `bounds` argument.')
+            raise TypeError("Invalid type for `bounds` argument.")
 
 
 class UniformPriorMixin:
@@ -63,7 +63,7 @@ class UniformPriorMixin:
         numpy.ndarray
             Array of log-probabilities.
         """
-        with np.errstate(divide='ignore'):
+        with np.errstate(divide="ignore"):
             log_p = np.log(self.in_bounds(x), dtype=float)
         log_p -= np.sum(np.log(self.upper_bounds - self.lower_bounds))
         return log_p
@@ -83,9 +83,8 @@ class UniformPriorMixin:
         """
         x_out = x.copy()
         for n in self.names:
-            x_out[n] = (
-                (x[n] - self.bounds[n][0])
-                / (self.bounds[n][1] - self.bounds[n][0])
+            x_out[n] = (x[n] - self.bounds[n][0]) / (
+                self.bounds[n][1] - self.bounds[n][0]
             )
         return x_out
 
@@ -104,8 +103,7 @@ class UniformPriorMixin:
         """
         x_out = x.copy()
         for n in self.names:
-            x_out[n] = (
-                (self.bounds[n][1] - self.bounds[n][0])
-                * x[n] + self.bounds[n][0]
-            )
+            x_out[n] = (self.bounds[n][1] - self.bounds[n][0]) * x[
+                n
+            ] + self.bounds[n][0]
         return x_out

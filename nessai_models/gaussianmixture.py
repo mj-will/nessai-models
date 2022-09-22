@@ -33,6 +33,7 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
     bounds : Sequence[float], numpy.ndarray]
         Prior bounds.
     """
+
     def __init__(
         self,
         dims: int = 4,
@@ -41,7 +42,7 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
         config: Optional[List[Dict[str, np.ndarray]]] = None,
         random_state: Optional[np.random.RandomState] = None,
         seed: int = 1234,
-        bounds: Union[Sequence[float], np.ndarray] = [-10.0, 10.0]
+        bounds: Union[Sequence[float], np.ndarray] = [-10.0, 10.0],
     ) -> None:
         super().__init__(dims, bounds)
 
@@ -53,21 +54,19 @@ class GaussianMixture(UniformPriorMixin, NDimensionalModel):
             self.weights = np.ones(n_gaussians) / n_gaussians
         else:
             if len(weights) != n_gaussians:
-                ValueError(
-                    'Length of weights must match number of Gaussians'
-                )
+                ValueError("Length of weights must match number of Gaussians")
             self.weights = np.array(weights)
         self.gaussians = n_gaussians * [None]
         if config is None:
             config = n_gaussians * [None]
         elif len(config) != n_gaussians:
-            raise RuntimeError('Config does not match number of Gaussians')
+            raise RuntimeError("Config does not match number of Gaussians")
 
         for n in range(n_gaussians):
             if config[n] is None:
                 config[n] = dict(
                     mean=random_state.uniform(bounds[0], bounds[1], dims),
-                    cov=3 * random_state.rand() * np.eye(dims)
+                    cov=3 * random_state.rand() * np.eye(dims),
                 )
             self.gaussians[n] = multivariate_normal(**config[n])
 
@@ -98,44 +97,52 @@ class GaussianMixtureWithData(UniformPriorMixin, BaseModel):
     n : int
         Number of data points to use.
     """
+
     def __init__(self, n: int = 1000) -> None:
-        self.names = ['mu1', 'sigma1', 'mu2', 'sigma2', 'weight']
+        self.names = ["mu1", "sigma1", "mu2", "sigma2", "weight"]
         self.bounds = {
-            'mu1': [-3, 3],
-            'sigma1': [0.01, 1],
-            'mu2': [-3, 3],
-            'sigma2': [0.01, 1.0],
-            'weight': [0.0, 1.0]
+            "mu1": [-3, 3],
+            "sigma1": [0.01, 1],
+            "mu2": [-3, 3],
+            "sigma2": [0.01, 1.0],
+            "weight": [0.0, 1.0],
         }
 
         self.truth = {
-            'mu1': 0.5,
-            'sigma1': 0.5,
-            'mu2': -1.5,
-            'sigma2': 0.03,
-            'weight': 0.2
+            "mu1": 0.5,
+            "sigma1": 0.5,
+            "mu2": -1.5,
+            "sigma2": 0.03,
+            "weight": 0.2,
         }
-        self.gaussian1 = norm(self.truth['mu1'], scale=self.truth['sigma1'])
-        self.gaussian2 = norm(self.truth['mu2'], scale=self.truth['sigma2'])
+        self.gaussian1 = norm(self.truth["mu1"], scale=self.truth["sigma1"])
+        self.gaussian2 = norm(self.truth["mu2"], scale=self.truth["sigma2"])
 
-        n1 = int(self.truth['weight'] * n)
+        n1 = int(self.truth["weight"] * n)
         n2 = n - n1
 
-        self.data = np.concatenate([
-            self.gaussian1.rvs(size=n1),
-            self.gaussian2.rvs(size=n2)
-        ])
+        self.data = np.concatenate(
+            [self.gaussian1.rvs(size=n1), self.gaussian2.rvs(size=n2)]
+        )
 
     def log_likelihood(self, x: np.ndarray) -> np.ndarray:
         """Returns log likelihood of given live point."""
-        w = x['weight'][..., np.newaxis]
-        mu1 = x['mu1'][..., np.newaxis]
-        mu2 = x['mu2'][..., np.newaxis]
-        sigma1 = x['sigma1'][..., np.newaxis]
-        sigma2 = x['sigma2'][..., np.newaxis]
-        log_l1 = np.sum(np.log(w) - np.log(sigma1) -
-                        0.5 * ((self.data - mu1) / sigma1) ** 2, axis=-1)
-        log_l2 = np.sum(np.log(1.0 - w) - np.log(sigma2) -
-                        0.5 * ((self.data - mu2) / sigma2) ** 2, axis=-1)
+        w = x["weight"][..., np.newaxis]
+        mu1 = x["mu1"][..., np.newaxis]
+        mu2 = x["mu2"][..., np.newaxis]
+        sigma1 = x["sigma1"][..., np.newaxis]
+        sigma2 = x["sigma2"][..., np.newaxis]
+        log_l1 = np.sum(
+            np.log(w)
+            - np.log(sigma1)
+            - 0.5 * ((self.data - mu1) / sigma1) ** 2,
+            axis=-1,
+        )
+        log_l2 = np.sum(
+            np.log(1.0 - w)
+            - np.log(sigma2)
+            - 0.5 * ((self.data - mu2) / sigma2) ** 2,
+            axis=-1,
+        )
         log_l = np.logaddexp(log_l1, log_l2)
         return log_l

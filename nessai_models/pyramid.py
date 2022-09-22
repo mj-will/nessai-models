@@ -18,10 +18,11 @@ class Pyramid(UniformPriorMixin, NDimensionalModel):
     bounds :
         Prior bounds.
     """
+
     def __init__(
         self,
         dims: int = 2,
-        bounds: Union[Sequence[int], np.ndarray] = [-10, 10]
+        bounds: Union[Sequence[int], np.ndarray] = [-10, 10],
     ) -> None:
         super().__init__(dims, bounds)
 

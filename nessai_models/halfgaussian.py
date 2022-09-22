@@ -22,14 +22,15 @@ class HalfGaussian(UniformPriorMixin, NDimensionalModel):
     bounds : Union[Sequence[float], numpy.ndarray]
         Prior bounds.
     """
+
     def __init__(
         self,
         dims: int = 2,
-        bounds: Union[Sequence[int], np.ndarray] = [0.0, 10.0]
+        bounds: Union[Sequence[int], np.ndarray] = [0.0, 10.0],
     ) -> None:
         super().__init__(dims, bounds)
         if not all(self.lower_bounds == 0.0):
-            raise ValueError('Lower bounds must all be zero!')
+            raise ValueError("Lower bounds must all be zero!")
         self.ln_evidence = compute_gaussian_ln_evidence(bounds, dims=self.dims)
 
     def log_likelihood(self, x: np.ndarray) -> np.ndarray:

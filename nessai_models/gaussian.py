@@ -30,14 +30,14 @@ def compute_gaussian_ln_evidence(
     if np.ndim(bounds) == 1:
         if dims is None:
             raise ValueError(
-                'dims must be specified if bounds is 1-dimensional'
+                "dims must be specified if bounds is 1-dimensional"
             )
         ln_z = -dims * np.log(np.ptp(bounds))
     else:
         if dims and np.shape(bounds)[0] != dims:
             raise ValueError(
-                'When providing 2-d bounds and dims, dims must match the '
-                'first dimension of bounds.'
+                "When providing 2-d bounds and dims, dims must match the "
+                "first dimension of bounds."
             )
         ln_z = -np.log(np.ptp(bounds, axis=-1)).sum()
     return ln_z
@@ -64,13 +64,14 @@ class Gaussian(UniformPriorMixin, NDimensionalModel):
         evidence is zero. Only applies when :code:`mean` and :code:`cov` are
         not specified.
     """
+
     def __init__(
         self,
         dims: int = 2,
         bounds: Union[Sequence[float], np.ndarray] = [-10.0, 10.0],
         mean: Union[Sequence[float], np.ndarray] = None,
         cov: Union[Sequence[float], np.ndarray] = None,
-        normalise : bool = False,
+        normalise: bool = False,
     ) -> None:
         super().__init__(dims, bounds)
 
@@ -91,8 +92,9 @@ class Gaussian(UniformPriorMixin, NDimensionalModel):
         self.normalise = normalise
 
         if cov is None and mean is None:
-            self.ln_evidence = \
-                compute_gaussian_ln_evidence(bounds, dims=self.dims)
+            self.ln_evidence = compute_gaussian_ln_evidence(
+                bounds, dims=self.dims
+            )
             if self.normalise:
                 self._norm_const = self.ln_evidence
         else:
@@ -101,7 +103,6 @@ class Gaussian(UniformPriorMixin, NDimensionalModel):
                 warnings.warn("Cannot normalise non-unit Gaussian")
                 self.normalise = False
 
- 
     def log_likelihood(self, x: np.ndarray) -> np.ndarray:
         """Gaussian log-likelihood."""
         # Use a view rather than making a new copy of y

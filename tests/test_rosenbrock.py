@@ -41,7 +41,7 @@ def test_rosenbrock_function_1d(func):
 
 def test_rosenbrock_minimum(func):
     """Assert there is minimum at (1, 1).
-    
+
     This should apply to both versions of the function.
     """
     np.testing.assert_equal(func(np.array([1, 1])), 0.0)
@@ -53,7 +53,7 @@ def test_init(model, uncoupled):
     dims = 4
     bounds = [-1, 1]
 
-    with patch('nessai_models.rosenbrock.NDimensionalModel.__init__') as mock:
+    with patch("nessai_models.rosenbrock.NDimensionalModel.__init__") as mock:
         Rosenbrock.__init__(
             model, dims=dims, bounds=bounds, uncoupled=uncoupled
         )
@@ -70,11 +70,10 @@ def test_log_likelihood(model):
     """Assert the correct functions are called."""
     logL = 1.0
     model._fn = MagicMock(return_value=logL)
-    model.unstructured_view = MagicMock(return_value='view')
-    x = 'input'
+    model.unstructured_view = MagicMock(return_value="view")
+    x = "input"
     out = Rosenbrock.log_likelihood(model, x)
 
     assert out == -logL
     model.unstructured_view.assert_called_once_with(x)
-    model._fn.assert_called_once_with('view')
-
+    model._fn.assert_called_once_with("view")

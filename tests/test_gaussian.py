@@ -3,9 +3,7 @@
 Tests specific to the n-dimensional Gaussian.
 """
 import numpy as np
-from nessai.livepoint import numpy_array_to_live_points, live_points_to_array
 import pytest
-from scipy.stats import multivariate_normal
 from unittest.mock import MagicMock, create_autospec, patch
 
 from nessai_models import Gaussian
@@ -20,11 +18,9 @@ def model():
 def test_init(model):
     """Test the init method"""
     model.dims = 2
-    with patch('nessai_models.base.NDimensionalModel.__init__') as m, \
-         patch(
-            'nessai_models.gaussian.compute_gaussian_ln_evidence',
-            return_value=1.0
-        ) as m1:
+    with patch("nessai_models.base.NDimensionalModel.__init__") as m, patch(
+        "nessai_models.gaussian.compute_gaussian_ln_evidence", return_value=1.0
+    ) as m1:
         Gaussian.__init__(model, 2, [-5, 5], normalise=True)
     m.assert_called_once_with(2, [-5, 5])
     m1.assert_called_once_with([-5, 5], dims=2)
@@ -60,7 +56,7 @@ def test_init_cannot_normalise(model):
         (None, np.zeros(2)),
         (2.0, np.array([2, 2])),
         (np.array([2, 2]), np.array([2, 2])),
-    ]
+    ],
 )
 def test_init_mean(model, mean, expected):
     """Assert the mean is set correctly"""
@@ -74,7 +70,7 @@ def test_init_mean(model, mean, expected):
     [
         (None, np.eye(2)),
         (np.eye(2), np.eye(2)),
-    ]
+    ],
 )
 def test_init_cov(model, cov, expected):
     """Assert the covariance is set correctly"""
@@ -103,10 +99,10 @@ def test_log_likelihood(model):
 @pytest.mark.parametrize(
     "dims, bounds, expected",
     [
-        [2, [-10, 10], - 2 * np.log(20)],
+        [2, [-10, 10], -2 * np.log(20)],
         [None, [[-10, 10], [-10, 10]], -2 * np.log(20)],
         [4, [-5, 5], -4 * np.log(10)],
-    ]
+    ],
 )
 def test_gaussian_ln_evidence(dims, bounds, expected):
     """Assert the correct log evidence is returned."""
