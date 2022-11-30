@@ -5,8 +5,10 @@ from nessai_models import (
     GaussianMixture,
     GaussianMixtureWithData,
     HalfGaussian,
+    LinearSignal,
     Pyramid,
     Rosenbrock,
+    SinusoidalSignal,
 )
 import pytest
 
@@ -17,8 +19,10 @@ all_models = [
     GaussianMixture,
     GaussianMixtureWithData,
     HalfGaussian,
+    LinearSignal,
     Pyramid,
     Rosenbrock,
+    SinusoidalSignal,
 ]
 
 
