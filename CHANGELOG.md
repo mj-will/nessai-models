@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add models for linear and sinusoidal signals in Gaussian noise.
+
 ## [0.1.0] - 2022-09-22
 
 ### Added
