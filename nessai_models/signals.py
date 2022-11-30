@@ -76,7 +76,7 @@ class GaussianNoisePlusSignal(UniformPriorMixin, BaseModel):
 
 class LinearSignal(GaussianNoisePlusSignal):
     """Linear signal model in Gaussian noise.
-    
+
     Parameter names are: m, c
     """
 
@@ -114,7 +114,7 @@ class LinearSignal(GaussianNoisePlusSignal):
 
 class SinusoidalSignal(GaussianNoisePlusSignal):
     """Sinusoidal signal model in Gaussian noise.
-    
+
     Parameter names are: amp, phase, f, offset
     """
 
