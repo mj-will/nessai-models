@@ -16,12 +16,14 @@ Models for use with the nested sampling package [`nessai`](https://github.com/mj
 * Gaussian mixture using data to based on [this example](https://github.com/johnveitch/cpnest/blob/master/examples/gaussianmixture.py) from `cpnest`
 * n-dimensional Egg Box based on the version in [Feroz et al. 2008](https://arxiv.org/abs/0809.3437)
 * n-dimensional Pyramid-like model
+* n-dimensional Brewer likelihod (Skilling's "Staistical Model") from [Brewer et al.](https://arxiv.org/abs/0912.2380)
 * Linear signal plus Gaussian noise model (`LinearSignal`)
 * Sinusoidal signal plus Gaussian noise model (`SinusoidalSignal`)
 
 ## Requirements
 
 `nessai_models` requires:
+
 * `numpy`
 * `scipy`
 * `nessai>=0.6.0`
