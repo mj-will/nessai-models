@@ -12,7 +12,7 @@ from .base import NDimensionalModel, UniformPriorMixin
 
 class Brewer(UniformPriorMixin, NDimensionalModel):
     """Bimodal likelihood described in Brewer et al. arXiv:0912.2380.
-    
+
     Defaults match those described in the paper, but can be changed to match
     Skilling's original "Statistics Problem".
 
@@ -33,6 +33,7 @@ class Brewer(UniformPriorMixin, NDimensionalModel):
     bounds : Union[Sequence[float], numpy.ndarray]
         Prior bounds.
     """
+
     def __init__(
         self,
         v_mean: float = 0.0,
@@ -41,7 +42,7 @@ class Brewer(UniformPriorMixin, NDimensionalModel):
         u_width: float = 0.01,
         weight: float = 100.0,
         dims: int = 20,
-        bounds: Union[Sequence[float], np.ndarray] = [-0.5, 0.0],
+        bounds: Union[Sequence[float], np.ndarray] = [-0.5, 0.5],
     ) -> None:
         super().__init__(dims=dims, bounds=bounds)
 
@@ -49,21 +50,21 @@ class Brewer(UniformPriorMixin, NDimensionalModel):
         self.ln_weight = np.log(weight)
         self.v_dist = multivariate_normal(
             mean=v_mean * np.ones(self.dims),
-            cov=(v_width ** 2) * np.eye(self.dims)
+            cov=(v_width**2) * np.eye(self.dims),
         )
         self.u_dist = multivariate_normal(
             mean=u_mean * np.ones(self.dims),
-            cov=(u_width ** 2) * np.eye(self.dims)
+            cov=(u_width**2) * np.eye(self.dims),
         )
 
     def log_likelihood(self, x: np.ndarray) -> np.ndarray:
         """Likelihood function.
-        
+
         Parameters
         ----------
         x : numpy.ndarray
             Structured array of parameters.
-        
+
         Returns
         -------
         numpy.ndarray
