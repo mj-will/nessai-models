@@ -7,11 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.3.0] - 2023-02-19
+
+### Added
+
+- Add Brewer likelihood described in [arXiv:0912.2380](https://arxiv.org/abs/0912.2380). ([#28](https://github.com/mj-will/nessai-models/pull/28))
+
 ## [0.2.0] - 2022-12-16
 
 ### Added
 
-- Add models for linear and sinusoidal signals in Gaussian noise.
+- Add models for linear and sinusoidal signals in Gaussian noise. ([#26](https://github.com/mj-will/nessai-models/pull/26))
 
 ## [0.1.0] - 2022-09-22
 
@@ -27,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add basic tests for all models
 - Add a basic example ([#21](https://github.com/mj-will/nessai-models/pull/21))
 
-[Unreleased]: https://github.com/mj-will/nessai-models/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/mj-will/nessai-models/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/mj-will/nessai-models/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/mj-will/nessai-models/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/mj-will/nessai-models/releases/tag/v0.1.0
