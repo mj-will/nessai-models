@@ -21,7 +21,7 @@ def test_sampling(tmp_path, ModelClass):
         output=output,
         resume=False,
         max_iteration=500,
-        tolerance=1.0,
+        stopping=1.0,
         plot=False,
     )
     fs.run(plot=False)

@@ -13,6 +13,7 @@ try:
 except PackageNotFoundError:
     pass
 
+from .brewer import Brewer
 from .eggbox import EggBox
 from .gaussian import Gaussian
 from .gaussianmixture import GaussianMixture, GaussianMixtureWithData
@@ -22,6 +23,7 @@ from .rosenbrock import Rosenbrock
 from .signals import LinearSignal, SinusoidalSignal
 
 __all__ = [
+    "Brewer",
     "EggBox",
     "Gaussian",
     "GaussianMixture",

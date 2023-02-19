@@ -1,5 +1,6 @@
 """General configuration for all tests"""
 from nessai_models import (
+    Brewer,
     EggBox,
     Gaussian,
     GaussianMixture,
@@ -14,6 +15,7 @@ import pytest
 
 
 all_models = [
+    Brewer,
     EggBox,
     Gaussian,
     GaussianMixture,

@@ -14,7 +14,7 @@ from nessai_models.base import (
 def test_n_dimensional_model_bounds(bounds):
     """Test the n-dimensional model init."""
     model = create_autospec(NDimensionalModel)
-    NDimensionalModel.__init__(model, 2, [-10, 10])
+    NDimensionalModel.__init__(model, 2, bounds)
     assert model.names == ["x_0", "x_1"]
     np.testing.assert_equal(model.bounds["x_0"], [-10.0, 10.0])
     np.testing.assert_equal(model.bounds["x_1"], [-10.0, 10.0])
