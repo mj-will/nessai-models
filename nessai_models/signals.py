@@ -38,7 +38,6 @@ class GaussianNoisePlusSignal(UniformPriorMixin, BaseModel):
         start: float = 0.0,
         end: float = 1.0,
     ) -> None:
-
         self.names = names
 
         if truth is None:
@@ -89,7 +88,6 @@ class LinearSignal(GaussianNoisePlusSignal):
         start: float = 0,
         end: float = 10,
     ) -> None:
-
         names = ["m", "c"]
         if bounds is None:
             bounds = dict(
@@ -127,7 +125,6 @@ class SinusoidalSignal(GaussianNoisePlusSignal):
         start: float = 0,
         end: float = 10,
     ) -> None:
-
         names = ["amp", "phase", "f", "offset"]
         if bounds is None:
             bounds = dict(
