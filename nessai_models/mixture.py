@@ -37,7 +37,6 @@ class MixtureOfDistributions(UniformPriorMixin, BaseModel):
         distributions_kwargs: Optional[dict] = None,
         map_fn: Optional[Callable] = None,
     ) -> None:
-
         self.bounds_mapping = dict(
             gaussian=[-10.0, 10.0],
             uniform=[-5.0, 5.0],
