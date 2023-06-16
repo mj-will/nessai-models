@@ -93,7 +93,9 @@ class MixtureOfDistributions(UniformPriorMixin, BaseModel):
             self.map_fn = map_fn
 
     @staticmethod
-    def _log_likelihood_name(mapping: dict, x: np.ndarray, name: str) -> np.ndarray:
+    def _log_likelihood_name(
+        mapping: dict, x: np.ndarray, name: str
+    ) -> np.ndarray:
         return mapping[name](x[name])
 
     def log_likelihood(self, x: np.ndarray) -> np.ndarray:
