@@ -22,6 +22,7 @@ from .mixture import MixtureOfDistributions
 from .pyramid import Pyramid
 from .rosenbrock import Rosenbrock
 from .signals import LinearSignal, SinusoidalSignal
+from .slabspike import SlabSpike
 
 __all__ = [
     "Brewer",
@@ -35,4 +36,5 @@ __all__ = [
     "Pyramid",
     "Rosenbrock",
     "SinusoidalSignal",
+    "SlabSpike"
 ]
