@@ -1,14 +1,71 @@
 [build-system]
-requires = ["setuptools", "wheel", "setuptools_scm[toml]"]
+requires = ["setuptools>=45", "setuptools-scm[toml]>=6.2", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "nessai_models"
+authors = [
+    {name = "Michael J. Williams", email = "michaeljw1@googlemail.com"},
+]
+description = "Models for nessai"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = [
+    "nested sampling",
+    "normalizing flows",
+    "machine learning",
+    "nessai",
+]
+dependencies = [
+    "numpy>=1.9",
+    "scipy>0.16",
+    "nessai>=0.6.0",
+]
+dynamic = [
+    "version",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/mj-will/nessai-models"
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0",
+    "flake8",
+    "pre-commit",
+    "pytest>=6.0",
+    "pytest-cov",
+    "pytest-integration",
+]
 
 [tool.setuptools_scm]
 
-[tool.black]
-line-length = 79
-target-version = ['py37', 'py38', 'py39', 'py310']
-
 [tool.pytest.ini_options]
 addopts = [
+    "-ra",
     "--import-mode=importlib",
+]
+testpaths = [
+    "tests"
+]
+
+[tool.black]
+line-length = 79
+target-version = [
+    "py38",
+    "py39",
+    "py310",
+    "py311",
+    "py312",
+]
+
+[tool.flake8]
+extend-ignore = [
+    "E203",
 ]
