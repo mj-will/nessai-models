@@ -12,6 +12,7 @@ from nessai_models import (
     Pyramid,
     Rosenbrock,
     SinusoidalSignal,
+    SlabSpike,
 )
 import pytest
 
@@ -28,6 +29,7 @@ all_models = [
     Pyramid,
     Rosenbrock,
     SinusoidalSignal,
+    SlabSpike,
 ]
 
 
