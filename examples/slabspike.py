@@ -6,11 +6,11 @@ This example uses a two-dimensional Gaussian Mixture model.
 from nessai.flowsampler import FlowSampler
 from nessai.utils import setup_logger
 from nessai_models import SlabSpike
-
+import numpy as np
 # Set up the logger as normal for nessai
 setup_logger()
 
-model = SlabSpike()
+model = SlabSpike(weights=[0.01,0.99])
 
 # We then create an instance of the sampler as usual
 fs = FlowSampler(model, output="slab_spike", resume=False,
