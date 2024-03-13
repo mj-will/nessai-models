@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """Example of using nessai_models with nessai.
 
-This example uses a two-dimensional Gaussian Mixture model.
+This example uses a Slab-Spike mixture of a narrow gaussian
+superposed on top of a wide one. This is designed to test for
+premature stopping of the nested sampler.
 """
 from nessai.flowsampler import FlowSampler
 from nessai.utils import setup_logger

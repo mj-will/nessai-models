@@ -36,5 +36,5 @@ __all__ = [
     "Pyramid",
     "Rosenbrock",
     "SinusoidalSignal",
-    "SlabSpike"
+    "SlabSpike",
 ]
