@@ -1,4 +1,5 @@
 """General configuration for all tests"""
+
 from nessai_models import (
     Brewer,
     EggBox,
