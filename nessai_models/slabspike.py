@@ -1,4 +1,4 @@
-from nessai_models import GaussianMixture
+from .gaussianmixture import GaussianMixture
 import numpy as np
 
 class SlabSpike(GaussianMixture):
