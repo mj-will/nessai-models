@@ -1,4 +1,5 @@
 """Tests the for the mixture module."""
+
 import multiprocessing.dummy as mp
 from nessai_models.mixture import MixtureOfDistributions
 import numpy as np

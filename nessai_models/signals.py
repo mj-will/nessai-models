@@ -1,4 +1,5 @@
 """Signal plus noise models."""
+
 from abc import abstractmethod
 from typing import Dict, List, Optional
 

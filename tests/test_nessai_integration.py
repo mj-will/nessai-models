@@ -26,4 +26,4 @@ def test_sampling(tmp_path, ModelClass):
     )
     fs.run(plot=False)
     # Make sure a result is produced
-    os.path.exists(os.path.join(output, "result.json"))
+    assert os.path.isfile(os.path.join(output, "result.hdf5"))

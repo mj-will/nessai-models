@@ -1,4 +1,5 @@
 """Tests for signal-based models"""
+
 import numpy as np
 import pytest
 
